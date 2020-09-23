@@ -1,0 +1,20 @@
+{
+  "streams": [
+    {
+      "title": "LOTRBFME",
+      "description": "Lord of the Rings: Battle for Middle Earth",
+      "id": 1
+    },
+    {
+      "title": "NFSUG",
+      "description": "Need for Speed: Underground",
+      "id": 2
+    },
+    {
+      "title": "awdawd",
+      "description": "awdaw",
+      "userId": "107275755681128569151",
+      "id": 3
+    }
+  ]
+}
