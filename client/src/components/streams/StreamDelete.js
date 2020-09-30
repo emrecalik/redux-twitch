@@ -21,12 +21,7 @@ class StreamDelete extends React.Component {
         history.push("/");
     }
 
-    render() {
-
-        if(!this.props.stream) {
-            return null;
-        }
-
+    renderContent = () => {
         return (
             <Modal
                 open={this.props.modal.open}
@@ -47,13 +42,26 @@ class StreamDelete extends React.Component {
             </Modal>
         );
     }
+
+    render() {
+
+        if(!this.props.stream || !this.props.currentUserId) {
+            return <div>Loading...</div>;
+        }
+
+        if (this.props.currentUserId !== this.props.stream.userId) {
+            return <h1>You are not authorized!</h1>
+        }
+
+        return <div>{this.renderContent()}</div>;
+    }
 }
 
 const mapStateToProps = (state, ownProps) => {
-    console.log(state.streams[ownProps.match.params.id]);
     return {
         modal: state.modal,
-        stream: state.streams[ownProps.match.params.id]
+        stream: state.streams[ownProps.match.params.id],
+        currentUserId: state.user.userId
     }
 }
 

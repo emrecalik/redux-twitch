@@ -2,7 +2,6 @@ import React from "react";
 import { connect } from "react-redux";
 import { fetchStream, editStream } from "../../actions";
 import StreamForm from "./StreamForm";
-import { reduxForm } from "redux-form";
 
 class StreamEdit extends React.Component {
 
@@ -17,18 +16,21 @@ class StreamEdit extends React.Component {
     }
 
     renderContent = () => {
-        const { title } = this.props.initialValues;
-
-        if (!title) {
-            return null;
+        if (!this.props.stream || !this.props.currentUserId) {
+            return <div>Loading...</div>
         }
+
+        if (this.props.currentUserId !== this.props.stream.userId) {
+            return <h1>You are not authorized!</h1>
+        }
+
+        const { title, description } = this.props.stream;
 
         return (
             <React.Fragment>
-                <StreamForm onSubmit={this.handleOnSubmit}/>
+                <StreamForm initialValues={{title, description}} onSubmit={this.handleOnSubmit}/>
             </React.Fragment>
         );
-
     }
 
     render() {
@@ -37,16 +39,10 @@ class StreamEdit extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-    const stream = state.streams[ownProps.match.params.id]
-
     return {
-        initialValues: {
-            title: stream.title,
-            description: stream.description,
-        },
-        userId: stream.userId
+        stream: state.streams[ownProps.match.params.id],
+        currentUserId: state.user.userId
     }
 }
 
-export default connect(mapStateToProps, { fetchStream, editStream })
-((reduxForm({form: 'contact', enableReinitialize: true}))(StreamEdit));
+export default connect(mapStateToProps, { fetchStream, editStream })(StreamEdit);
